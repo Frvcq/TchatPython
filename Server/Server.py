@@ -15,12 +15,14 @@ class server:
     self.socket.bind((self.host,self.port))
     #la file dattente
     self.socket.listen(50)
+    #on sajoute en tant que socket afin de parlementer aux autres
+    self.listeClient.append(self.socket)
+    print("Serveur demarré")
     #jai pas trouver comme faire de la prog evenementielle, on boucle alors a linfini
     while 1:
         # On recupere la liste de nos sockets
-        read_sockets  = select.select(self.listeClient, [], [])
-        write_sockets = select.select(self.listeClient, [], [])
-        error_sockets = select.select(self.listeClient, [], [])
+        read_sockets,write_sockets,error_sockets = select.select(self.listeClient,[],[])
+
         for sock in read_sockets:
             #Nnouvelle connexion
             if sock == self.socket:
